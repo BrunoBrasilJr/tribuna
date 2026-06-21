@@ -73,4 +73,4 @@ Em desenvolvimento. As funcionalidades de placares ao vivo estão operacionais; 
 Bruno Brasil
 
 - GitHub: https://github.com/BrunoBrasilJr
-- LinkedIn: [SEU LINKEDIN AQUI]
+- LinkedIn: https://www.linkedin.com/in/bruno-brasil-2474263a3/

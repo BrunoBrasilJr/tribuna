@@ -26,7 +26,7 @@ const TRADUCAO_TIMES = {
   Iran: "Irã",
   "IR Iran": "Irã",
   Uruguay: "Uruguai",
-  "Cape Verde": "Cabo Verde",
+  "Cape Verde Islands": "Cabo Verde",
   "New Zealand": "Nova Zelândia",
   Egypt: "Egito",
   Argentina: "Argentina",

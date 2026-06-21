@@ -1,0 +1,280 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --fundo: #0a0e14;
+  --card: #141b26;
+  --card-borda: #232d3b;
+  --texto: #e6edf3;
+  --texto-fraco: #8b97a8;
+  --verde: #2ee06a;
+  --azul: #4493f8;
+  --vermelho: #ff5c5c;
+}
+
+body {
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background: radial-gradient(
+    1200px 600px at 50% -10%,
+    #16202e 0%,
+    var(--fundo) 60%
+  );
+  background-attachment: fixed;
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+  padding: 16px 24px;
+  background: rgba(10, 14, 20, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--card-borda);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+nav a {
+  color: var(--texto-fraco);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+nav a:hover {
+  color: var(--azul);
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.lista-jogos {
+  display: grid;
+  gap: 14px;
+}
+
+.card-jogo {
+  background: var(--card);
+  border: 1px solid var(--card-borda);
+  border-radius: 16px;
+  padding: 16px 18px;
+  transition:
+    transform 0.15s,
+    border-color 0.2s;
+}
+
+.card-jogo:hover {
+  transform: translateY(-2px);
+  border-color: #34465c;
+}
+
+.destaque-vivo {
+  border-color: rgba(46, 224, 106, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(46, 224, 106, 0.15),
+    0 4px 24px rgba(46, 224, 106, 0.08);
+}
+
+.card-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.card-liga {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto-fraco);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-liga .escudo-wrap {
+  width: 18px;
+  height: 18px;
+}
+
+.card-liga .time-logo,
+.card-liga .escudo-fallback {
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.badge.ao-vivo {
+  background: rgba(46, 224, 106, 0.15);
+  color: var(--verde);
+  animation: pulsar 1.6s ease-in-out infinite;
+}
+
+.badge.encerrado {
+  background: rgba(139, 151, 168, 0.12);
+  color: var(--texto-fraco);
+}
+
+.badge.agendado {
+  background: rgba(68, 147, 248, 0.12);
+  color: var(--azul);
+}
+
+@keyframes pulsar {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.card-times {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.time {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.time-dir {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.time-nome {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.escudo-wrap {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.time-logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.escudo-fallback {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2a3645, #1b2530);
+  color: var(--texto);
+  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--card-borda);
+}
+
+.placar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+}
+
+.gols {
+  font-size: 24px;
+  font-weight: 800;
+  min-width: 18px;
+  text-align: center;
+}
+
+.x {
+  color: var(--texto-fraco);
+  font-size: 13px;
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--texto-fraco);
+  padding: 32px 0;
+  justify-content: center;
+}
+
+.aviso.erro {
+  color: var(--vermelho);
+}
+
+.girando {
+  animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.escudo-wrap.escudo-liga {
+  width: 28px;
+  height: 28px;
+}
+
+.escudo-liga .escudo-fallback {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(245, 197, 24, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icone-trofeu {
+  width: 16px;
+  height: 16px;
+  color: #f5c518;
+  flex-shrink: 0;
+}

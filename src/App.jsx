@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import Jogo from "./pages/Jogo";
 import Perfil from "./pages/Perfil";
 import Login from "./pages/Login";
+import Feed from "./pages/Feed";
 import { LogOut } from "lucide-react";
 
 function Menu() {
@@ -27,6 +28,7 @@ function Menu() {
       <Link to="/">Início</Link>
       {usuario ? (
         <>
+          <Link to="/feed">Feed</Link>
           <Link to="/perfil">Perfil</Link>
           <button className="nav-sair" onClick={aoSair}>
             <LogOut size={16} /> Sair
@@ -49,6 +51,7 @@ function App() {
           <Route path="/jogo" element={<Jogo />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/feed" element={<Feed />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -278,3 +278,167 @@ h1 {
   color: #f5c518;
   flex-shrink: 0;
 }
+.nav-sair {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--texto-fraco);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.nav-sair:hover {
+  color: var(--vermelho);
+}
+
+.auth-box {
+  max-width: 380px;
+  margin: 40px auto 0;
+  background: var(--card);
+  border: 1px solid var(--card-borda);
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.auth-box h1 {
+  margin-bottom: 6px;
+}
+
+.auth-sub {
+  color: var(--texto-fraco);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.auth-campo {
+  margin-bottom: 16px;
+}
+
+.auth-campo label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--texto-fraco);
+}
+
+.auth-campo input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--fundo);
+  border: 1px solid var(--card-borda);
+  border-radius: 10px;
+  color: var(--texto);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.auth-campo input:focus {
+  border-color: var(--azul);
+}
+
+.auth-erro {
+  background: rgba(255, 92, 92, 0.12);
+  color: var(--vermelho);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.auth-botao {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px;
+  background: var(--azul);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s;
+}
+
+.auth-botao:hover {
+  opacity: 0.9;
+}
+
+.auth-botao:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.auth-troca {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--texto-fraco);
+}
+
+.auth-link {
+  background: none;
+  border: none;
+  color: var(--azul);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.auth-google {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  background: #fff;
+  color: #1f1f1f;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s;
+}
+
+.auth-google:hover {
+  opacity: 0.9;
+}
+
+.google-icone {
+  width: 18px;
+  height: 18px;
+}
+
+.auth-divisor {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: var(--texto-fraco);
+  font-size: 13px;
+}
+
+.auth-divisor::before,
+.auth-divisor::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--card-borda);
+}
+
+.auth-divisor span {
+  padding: 0 12px;
+}

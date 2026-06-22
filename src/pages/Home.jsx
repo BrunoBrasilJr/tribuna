@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { buscarJogosDeHoje } from "../services/api";
 import CardJogo from "../components/CardJogo";
-import { Loader2, CalendarX } from "lucide-react";
+import CardJogoSkeleton from "../components/CardJogoSkeleton";
+import { CalendarX } from "lucide-react";
 
 function Home() {
   const [jogos, setJogos] = useState([]);
@@ -20,9 +21,10 @@ function Home() {
       <h1>Jogos de Hoje</h1>
 
       {carregando && (
-        <div className="aviso">
-          <Loader2 className="girando" />
-          <span>Carregando jogos...</span>
+        <div className="lista-jogos">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <CardJogoSkeleton key={i} />
+          ))}
         </div>
       )}
 
@@ -35,11 +37,13 @@ function Home() {
         </div>
       )}
 
-      <div className="lista-jogos">
-        {jogos.map((jogo) => (
-          <CardJogo key={jogo.fixture.id} jogo={jogo} />
-        ))}
-      </div>
+      {!carregando && !erro && (
+        <div className="lista-jogos">
+          {jogos.map((jogo) => (
+            <CardJogo key={jogo.fixture.id} jogo={jogo} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

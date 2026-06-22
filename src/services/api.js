@@ -117,3 +117,30 @@ export async function buscarJogosDeHoje() {
   cache[chaveCache] = { dados: jogos, quando: agora };
   return jogos;
 }
+
+export async function buscarDetalhesJogo(fixtureId) {
+  const chaveCache = `detalhe-${fixtureId}`;
+  const agora = Date.now();
+
+  if (
+    cache[chaveCache] &&
+    agora - cache[chaveCache].quando < CACHE_MINUTOS * 60 * 1000
+  ) {
+    return cache[chaveCache].dados;
+  }
+
+  const resposta = await fetch(
+    `${BASE_URL}/fixtures?id=${fixtureId}&timezone=${TIMEZONE}`,
+    { headers: { "x-apisports-key": API_KEY } },
+  );
+
+  if (!resposta.ok) {
+    throw new Error(`Erro na API: ${resposta.status}`);
+  }
+
+  const json = await resposta.json();
+  const detalhe = (json.response || [])[0] || null;
+
+  cache[chaveCache] = { dados: detalhe, quando: agora };
+  return detalhe;
+}

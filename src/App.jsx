@@ -25,6 +25,9 @@ function Menu() {
 
   return (
     <nav>
+      <Link to="/" className="nav-logo">
+        Tribuna
+      </Link>
       <Link to="/">Início</Link>
       {usuario ? (
         <>
@@ -48,7 +51,7 @@ function App() {
         <Menu />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/jogo" element={<Jogo />} />
+          <Route path="/jogo/:id" element={<Jogo />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/login" element={<Login />} />
           <Route path="/feed" element={<Feed />} />

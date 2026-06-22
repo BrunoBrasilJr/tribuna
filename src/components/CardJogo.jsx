@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Trophy } from "lucide-react";
 import { traduzirTime } from "../services/api";
 
@@ -49,7 +50,10 @@ function CardJogo({ jogo }) {
   else etiqueta = <span className="badge agendado">{horario}</span>;
 
   return (
-    <div className={`card-jogo ${aoVivo ? "destaque-vivo" : ""}`}>
+    <Link
+      to={`/jogo/${fixture.id}`}
+      className={`card-jogo ${aoVivo ? "destaque-vivo" : ""}`}
+    >
       <div className="card-topo">
         <div className="card-liga">
           <Escudo
@@ -80,7 +84,7 @@ function CardJogo({ jogo }) {
           <Escudo src={teams.away.logo} nome={teams.away.name} />
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

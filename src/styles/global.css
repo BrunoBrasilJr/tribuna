@@ -1875,9 +1875,57 @@ a.card-jogo:link {
     flex-basis: 100%;
   }
 }
-body.modal-ativo {
-  overflow: hidden;
+
+/* ============================================
+   CAIXA DE ERRO
+   ============================================ */
+
+.erro-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 40px 24px;
 }
+
+.erro-box-ico {
+  color: var(--gold);
+}
+
+.erro-box-msg {
+  color: var(--text-secondary);
+  font-size: 14px;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.erro-box-botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    border-color 0.15s var(--ease-out),
+    background 0.15s var(--ease-out);
+}
+
+.erro-box-botao:hover {
+  border-color: var(--brand);
+  background: var(--surface-hover);
+}
+
 /* ============================================
    EDIÇÃO DE NOME NO PERFIL
    ============================================ */
@@ -1962,4 +2010,438 @@ body.modal-ativo {
   font-size: 12px;
   color: var(--text-tertiary);
   margin-top: 6px;
+}
+
+/* ============================================
+   PERFIL PÚBLICO
+   ============================================ */
+
+.pp-header {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.pp-capa {
+  height: 80px;
+  background: linear-gradient(135deg, var(--cor-clube) 0%, transparent 80%);
+  opacity: 0.25;
+}
+
+.pp-identidade {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px 20px;
+  margin-top: -44px;
+}
+
+.pp-avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-overlay);
+  border: 3px solid var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pp-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pp-nome-area {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pp-nome-area h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.pp-clube {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  width: fit-content;
+  transition: color 0.15s var(--ease-out);
+}
+
+.pp-clube:hover {
+  color: var(--text-primary);
+}
+
+.pp-clube-bola {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.pp-clube-vazio {
+  color: var(--text-tertiary);
+  font-size: 13px;
+}
+
+.pp-membro {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
+.pp-bio {
+  padding: 16px 24px 20px;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.pp-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.pp-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 12px;
+}
+
+.pp-stat-ico {
+  color: var(--text-tertiary);
+  margin-bottom: 2px;
+}
+
+.pp-stat-num {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.pp-stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.post-avatar-link,
+.post-nome-link,
+.comentario-avatar-link,
+.comentario-nome-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.post-nome-link:hover .post-nome,
+.comentario-nome-link:hover .comentario-nome {
+  color: var(--brand);
+}
+
+.post-avatar-link,
+.comentario-avatar-link {
+  transition: opacity 0.15s var(--ease-out);
+}
+
+.post-avatar-link:hover,
+.comentario-avatar-link:hover {
+  opacity: 0.85;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADA
+   ============================================ */
+
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* ============================================
+   LAYOUT DE TRÊS COLUNAS
+   ============================================ */
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 680px) 280px;
+  justify-content: center;
+  gap: 24px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 16px;
+  align-items: start;
+}
+
+.layout-centro {
+  min-width: 0;
+}
+
+.layout-centro .page {
+  max-width: 100%;
+  padding: 28px 0 64px;
+}
+
+/* Lateral esquerda */
+
+.lateral-esq {
+  position: sticky;
+  top: 80px;
+  padding-top: 28px;
+}
+
+.lateral-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lateral-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+  transition:
+    background 0.15s var(--ease-out),
+    color 0.15s var(--ease-out);
+}
+
+.lateral-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-primary);
+}
+
+.lateral-item.ativo {
+  background: var(--brand-subtle);
+  color: var(--brand);
+  font-weight: 600;
+}
+
+/* Lateral direita */
+
+.lateral-dir {
+  position: sticky;
+  top: 80px;
+  padding-top: 28px;
+}
+
+.lateral-card {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.lateral-card-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--text-primary);
+}
+
+.lateral-torcidas {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lateral-torcida {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background 0.15s var(--ease-out);
+}
+
+.lateral-torcida:hover {
+  background: var(--surface-hover);
+}
+
+.lateral-torcida-bola {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.lateral-torcida-nome {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Responsivo: some a lateral direita no tablet */
+@media (max-width: 1080px) {
+  .layout {
+    grid-template-columns: 200px minmax(0, 680px);
+    max-width: 900px;
+  }
+  .lateral-dir {
+    display: none;
+  }
+}
+
+/* Responsivo: some as duas laterais no celular */
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+    max-width: 680px;
+  }
+  .lateral-esq {
+    display: none;
+  }
+}
+.lateral-torcida-num {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.lateral-ativo-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-tertiary);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.lateral-ativo-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lateral-meu-perfil {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: border-color 0.15s var(--ease-out);
+}
+
+.lateral-meu-perfil:hover {
+  border-color: var(--border-strong);
+}
+
+.lateral-meu-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.lateral-meu-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lateral-meu-nome {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lateral-meu-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.lateral-dir .lateral-card + .lateral-card {
+  margin-top: 16px;
 }

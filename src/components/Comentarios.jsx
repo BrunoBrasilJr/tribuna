@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { User, Send, Loader2, Trash2 } from "lucide-react";
 import {
   buscarComentarios,
@@ -91,18 +92,28 @@ function Comentarios({ postId, usuario, aoMudarTotal }) {
             const meu = c.autor_id === usuario?.id;
             return (
               <div key={c.id} className="comentario">
-                <div className="comentario-avatar">
-                  {autor.foto_url ? (
-                    <img src={autor.foto_url} alt={autor.nome} />
-                  ) : (
-                    <User size={15} className="post-avatar-vazio" />
-                  )}
-                </div>
+                <Link
+                  to={`/usuario/${c.autor_id}`}
+                  className="comentario-avatar-link"
+                >
+                  <div className="comentario-avatar">
+                    {autor.foto_url ? (
+                      <img src={autor.foto_url} alt={autor.nome} />
+                    ) : (
+                      <User size={15} className="post-avatar-vazio" />
+                    )}
+                  </div>
+                </Link>
                 <div className="comentario-corpo">
                   <div className="comentario-cab">
-                    <span className="comentario-nome">
-                      {autor.nome || "Torcedor"}
-                    </span>
+                    <Link
+                      to={`/usuario/${c.autor_id}`}
+                      className="comentario-nome-link"
+                    >
+                      <span className="comentario-nome">
+                        {autor.nome || "Torcedor"}
+                      </span>
+                    </Link>
                     <span className="comentario-tempo">
                       {tempoRelativo(c.criado_em)}
                     </span>

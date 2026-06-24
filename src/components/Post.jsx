@@ -61,20 +61,24 @@ function Post({ post, usuarioLogadoId, usuario, aoApagar }) {
   return (
     <div className="post">
       <div className="post-cabecalho">
-        <div className="post-avatar">
-          {mostrarFoto ? (
-            <img
-              src={autor.foto_url}
-              alt={autor.nome}
-              onError={() => setFotoFalhou(true)}
-            />
-          ) : (
-            <User size={20} className="post-avatar-vazio" />
-          )}
-        </div>
+        <Link to={`/usuario/${post.autor_id}`} className="post-avatar-link">
+          <div className="post-avatar">
+            {mostrarFoto ? (
+              <img
+                src={autor.foto_url}
+                alt={autor.nome}
+                onError={() => setFotoFalhou(true)}
+              />
+            ) : (
+              <User size={20} className="post-avatar-vazio" />
+            )}
+          </div>
+        </Link>
 
         <div className="post-info-autor">
-          <span className="post-nome">{autor.nome || "Torcedor"}</span>
+          <Link to={`/usuario/${post.autor_id}`} className="post-nome-link">
+            <span className="post-nome">{autor.nome || "Torcedor"}</span>
+          </Link>
           <span className="post-tempo">{tempoRelativo(post.criado_em)}</span>
         </div>
 

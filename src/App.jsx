@@ -10,10 +10,13 @@ import { useAuth } from "./context/auth-context";
 import Home from "./pages/Home";
 import Jogo from "./pages/Jogo";
 import Perfil from "./pages/Perfil";
+import PerfilPublico from "./pages/PerfilPublico";
 import Feed from "./pages/Feed";
 import Torcida from "./pages/Torcida";
 import BuscaClubes from "./components/BuscaClubes";
 import ModalLogin from "./components/ModalLogin";
+import LateralEsquerda from "./components/LateralEsquerda";
+import LateralDireita from "./components/LateralDireita";
 import { LogOut } from "lucide-react";
 
 function Menu() {
@@ -34,15 +37,10 @@ function Menu() {
       <BuscaClubes />
 
       <div className="nav-links">
-        <Link to="/">Início</Link>
         {usuario ? (
-          <>
-            <Link to="/feed">Feed</Link>
-            <Link to="/perfil">Perfil</Link>
-            <button className="nav-sair" onClick={aoSair}>
-              <LogOut size={16} /> Sair
-            </button>
-          </>
+          <button className="nav-sair" onClick={aoSair}>
+            <LogOut size={16} /> Sair
+          </button>
         ) : (
           <button className="nav-link-botao" onClick={abrirModal}>
             Entrar
@@ -59,13 +57,20 @@ function App() {
       <BrowserRouter>
         <Menu />
         <ModalLogin />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/jogo/:id" element={<Jogo />} />
-          <Route path="/perfil" element={<Perfil />} />
-          <Route path="/feed" element={<Feed />} />
-          <Route path="/torcida/:slug" element={<Torcida />} />
-        </Routes>
+        <div className="layout">
+          <LateralEsquerda />
+          <main className="layout-centro">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/jogo/:id" element={<Jogo />} />
+              <Route path="/perfil" element={<Perfil />} />
+              <Route path="/usuario/:id" element={<PerfilPublico />} />
+              <Route path="/feed" element={<Feed />} />
+              <Route path="/torcida/:slug" element={<Torcida />} />
+            </Routes>
+          </main>
+          <LateralDireita />
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );

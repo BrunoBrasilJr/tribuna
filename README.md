@@ -6,14 +6,6 @@ Rede social de futebol com placares ao vivo. O Tribuna une o acompanhamento de p
 
 Projeto desenvolvido para fins de aprendizado e portfólio.
 
-## Screenshots
-
-<!-- Adicione aqui prints das telas. Exemplo:
-![Home](caminho/para/home.png)
-![Detalhes do jogo](caminho/para/jogo.png)
-![Feed](caminho/para/feed.png)
--->
-
 ## Sobre o projeto
 
 A maioria das plataformas de placares ao vivo entrega apenas o dado bruto, sem espaço para a voz da torcida. O Tribuna propõe um caminho diferente: além dos jogos do dia e dos detalhes de cada partida, cada usuário escolhe seu clube do coração, participa de um feed social e tem uma página de torcida dedicada a cada clube.

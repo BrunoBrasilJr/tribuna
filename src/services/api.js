@@ -83,6 +83,35 @@ function hoje() {
 
 const ORDEM_STATUS = { "1H": 0, HT: 0, "2H": 0, ET: 0, LIVE: 0, NS: 1 };
 
+function checarErrosDaApi(json) {
+  const errs = json.errors;
+  if (!errs) return;
+
+  if (Array.isArray(errs)) {
+    if (errs.length > 0) {
+      throw new Error(
+        "A API de futebol retornou um erro. Tente novamente em instantes.",
+      );
+    }
+    return;
+  }
+
+  if (typeof errs === "object" && Object.keys(errs).length > 0) {
+    const primeiro = Object.values(errs)[0];
+    if (
+      typeof primeiro === "string" &&
+      primeiro.toLowerCase().includes("limit")
+    ) {
+      throw new Error(
+        "O limite de consultas de hoje foi atingido. Tente novamente mais tarde.",
+      );
+    }
+    throw new Error(
+      "A API de futebol retornou um erro. Tente novamente em instantes.",
+    );
+  }
+}
+
 export async function buscarJogosDeHoje() {
   const data = hoje();
   const chaveCache = `jogos-${data}`;
@@ -105,6 +134,8 @@ export async function buscarJogosDeHoje() {
   }
 
   const json = await resposta.json();
+  checarErrosDaApi(json);
+
   const jogos = (json.response || [])
     .filter((j) => LIGAS_PRINCIPAIS.includes(j.league.id))
     .sort((a, b) => {
@@ -139,6 +170,8 @@ export async function buscarDetalhesJogo(fixtureId) {
   }
 
   const json = await resposta.json();
+  checarErrosDaApi(json);
+
   const detalhe = (json.response || [])[0] || null;
 
   cache[chaveCache] = { dados: detalhe, quando: agora };

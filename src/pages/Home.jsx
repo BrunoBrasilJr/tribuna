@@ -1,20 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { buscarJogosDeHoje } from "../services/api";
 import CardJogo from "../components/CardJogo";
 import CardJogoSkeleton from "../components/CardJogoSkeleton";
-import { CalendarX } from "lucide-react";
+import { CalendarX, AlertTriangle, RotateCw } from "lucide-react";
 
 function Home() {
   const [jogos, setJogos] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
 
-  useEffect(() => {
+  const carregar = useCallback(() => {
+    setCarregando(true);
+    setErro(null);
     buscarJogosDeHoje()
       .then((dados) => setJogos(dados))
       .catch((e) => setErro(e.message))
       .finally(() => setCarregando(false));
   }, []);
+
+  useEffect(() => {
+    carregar();
+  }, [carregar]);
 
   return (
     <div className="page">
@@ -28,7 +34,15 @@ function Home() {
         </div>
       )}
 
-      {erro && <div className="aviso erro">Erro ao carregar: {erro}</div>}
+      {!carregando && erro && (
+        <div className="erro-box">
+          <AlertTriangle size={28} className="erro-box-ico" />
+          <p className="erro-box-msg">{erro}</p>
+          <button className="erro-box-botao" onClick={carregar}>
+            <RotateCw size={16} /> Tentar novamente
+          </button>
+        </div>
+      )}
 
       {!carregando && !erro && jogos.length === 0 && (
         <div className="aviso">
@@ -37,7 +51,7 @@ function Home() {
         </div>
       )}
 
-      {!carregando && !erro && (
+      {!carregando && !erro && jogos.length > 0 && (
         <div className="lista-jogos">
           {jogos.map((jogo) => (
             <CardJogo key={jogo.fixture.id} jogo={jogo} />

@@ -12,6 +12,8 @@ import Jogo from "./pages/Jogo";
 import Perfil from "./pages/Perfil";
 import Login from "./pages/Login";
 import Feed from "./pages/Feed";
+import Torcida from "./pages/Torcida";
+import BuscaClubes from "./components/BuscaClubes";
 import { LogOut } from "lucide-react";
 
 function Menu() {
@@ -28,18 +30,23 @@ function Menu() {
       <Link to="/" className="nav-logo">
         Tribuna
       </Link>
-      <Link to="/">Início</Link>
-      {usuario ? (
-        <>
-          <Link to="/feed">Feed</Link>
-          <Link to="/perfil">Perfil</Link>
-          <button className="nav-sair" onClick={aoSair}>
-            <LogOut size={16} /> Sair
-          </button>
-        </>
-      ) : (
-        <Link to="/login">Entrar</Link>
-      )}
+
+      <BuscaClubes />
+
+      <div className="nav-links">
+        <Link to="/">Início</Link>
+        {usuario ? (
+          <>
+            <Link to="/feed">Feed</Link>
+            <Link to="/perfil">Perfil</Link>
+            <button className="nav-sair" onClick={aoSair}>
+              <LogOut size={16} /> Sair
+            </button>
+          </>
+        ) : (
+          <Link to="/login">Entrar</Link>
+        )}
+      </div>
     </nav>
   );
 }
@@ -55,6 +62,7 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/login" element={<Login />} />
           <Route path="/feed" element={<Feed />} />
+          <Route path="/torcida/:slug" element={<Torcida />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

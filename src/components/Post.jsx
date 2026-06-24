@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { User, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { User, Heart, Trash2, MessageCircle } from "lucide-react";
+import { curtirPost, descurtirPost } from "../services/posts";
+import { slugDoClube } from "../services/clubes";
+import Comentarios from "./Comentarios";
 
 function tempoRelativo(data) {
   const agora = new Date();
@@ -16,11 +20,43 @@ function tempoRelativo(data) {
   return criado.toLocaleDateString("pt-BR");
 }
 
-function Post({ post, usuarioLogadoId, aoApagar }) {
+function Post({ post, usuarioLogadoId, usuario, aoApagar }) {
   const [fotoFalhou, setFotoFalhou] = useState(false);
+  const [curtido, setCurtido] = useState(post.curtidoPorMim);
+  const [total, setTotal] = useState(post.totalCurtidas);
+  const [processando, setProcessando] = useState(false);
+  const [mostrarComentarios, setMostrarComentarios] = useState(false);
+  const [totalComentarios, setTotalComentarios] = useState(
+    post.totalComentarios || 0,
+  );
+
   const autor = post.profiles || {};
   const ehMeuPost = post.autor_id === usuarioLogadoId;
   const mostrarFoto = autor.foto_url && !fotoFalhou;
+  const slugClube = post.clube_tag ? slugDoClube(post.clube_tag) : null;
+
+  async function alternarCurtida() {
+    if (!usuarioLogadoId || processando) return;
+
+    setProcessando(true);
+    const novoEstado = !curtido;
+
+    setCurtido(novoEstado);
+    setTotal((t) => t + (novoEstado ? 1 : -1));
+
+    try {
+      if (novoEstado) {
+        await curtirPost(post.id, usuarioLogadoId);
+      } else {
+        await descurtirPost(post.id, usuarioLogadoId);
+      }
+    } catch {
+      setCurtido(!novoEstado);
+      setTotal((t) => t + (novoEstado ? -1 : 1));
+    } finally {
+      setProcessando(false);
+    }
+  }
 
   return (
     <div className="post">
@@ -42,9 +78,17 @@ function Post({ post, usuarioLogadoId, aoApagar }) {
           <span className="post-tempo">{tempoRelativo(post.criado_em)}</span>
         </div>
 
-        {post.clube_tag && (
-          <span className="post-tag-clube">{post.clube_tag}</span>
-        )}
+        {post.clube_tag &&
+          (slugClube ? (
+            <Link
+              to={`/torcida/${slugClube}`}
+              className="post-tag-clube post-tag-link"
+            >
+              {post.clube_tag}
+            </Link>
+          ) : (
+            <span className="post-tag-clube">{post.clube_tag}</span>
+          ))}
       </div>
 
       <p className="post-texto">{post.texto}</p>
@@ -55,12 +99,37 @@ function Post({ post, usuarioLogadoId, aoApagar }) {
         </div>
       )}
 
-      {ehMeuPost && (
-        <div className="post-acoes">
+      <div className="post-rodape">
+        <button
+          className={`post-curtir ${curtido ? "curtido" : ""}`}
+          onClick={alternarCurtida}
+          disabled={!usuarioLogadoId}
+        >
+          <Heart size={17} fill={curtido ? "currentColor" : "none"} />
+          <span>{total}</span>
+        </button>
+
+        <button
+          className="post-comentar"
+          onClick={() => setMostrarComentarios((v) => !v)}
+        >
+          <MessageCircle size={17} />
+          <span>{totalComentarios}</span>
+        </button>
+
+        {ehMeuPost && (
           <button className="post-apagar" onClick={() => aoApagar(post.id)}>
             <Trash2 size={15} /> Apagar
           </button>
-        </div>
+        )}
+      </div>
+
+      {mostrarComentarios && (
+        <Comentarios
+          postId={post.id}
+          usuario={usuario}
+          aoMudarTotal={(delta) => setTotalComentarios((t) => t + delta)}
+        />
       )}
     </div>
   );

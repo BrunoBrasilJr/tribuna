@@ -100,14 +100,22 @@ nav {
   letter-spacing: -0.03em;
   color: var(--text-primary);
   text-decoration: none;
-  margin-right: auto;
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 1;
 }
 
 .nav-logo span {
   color: var(--brand);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  flex: 1;
 }
 
 nav a {
@@ -119,6 +127,10 @@ nav a {
 }
 
 nav a:hover {
+  color: var(--text-primary);
+}
+
+.nav-logo {
   color: var(--text-primary);
 }
 
@@ -138,6 +150,127 @@ nav a:hover {
 
 .nav-sair:hover {
   color: var(--text-primary);
+}
+
+/* ============================================
+   BUSCA NA NAVBAR
+   ============================================ */
+
+.busca-campo {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 360px;
+  flex-shrink: 0;
+  z-index: 60;
+}
+
+.busca-campo-ico {
+  position: absolute;
+  left: 12px;
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.busca-campo input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s var(--ease-out);
+}
+
+.busca-campo input:focus {
+  border-color: var(--brand);
+}
+
+.busca-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 6px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 60;
+  animation: surgir 0.18s var(--ease-out);
+}
+
+.busca-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s var(--ease-out);
+}
+
+.busca-item:hover {
+  background: var(--surface-hover);
+}
+
+.busca-item-escudo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--cor-clube);
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.busca-vazio {
+  padding: 12px;
+  color: var(--text-tertiary);
+  font-size: 13px;
+  text-align: center;
+}
+
+.busca-ativa .page {
+  filter: blur(6px);
+  pointer-events: none;
+  transition: filter 0.2s var(--ease-out);
+  user-select: none;
+}
+
+.busca-ativa::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 11, 0.4);
+  z-index: 30;
+  pointer-events: none;
+}
+
+@keyframes surgir-overlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* ============================================
@@ -876,6 +1009,19 @@ a.card-jogo:link {
   border-radius: var(--radius-full);
 }
 
+.post-tag-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color 0.15s var(--ease-out),
+    color 0.15s var(--ease-out);
+}
+
+.post-tag-link:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
 .post-texto {
   font-size: 14px;
   line-height: 1.55;
@@ -895,10 +1041,64 @@ a.card-jogo:link {
   display: block;
 }
 
-.post-acoes {
-  margin-top: 12px;
+.post-rodape {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.post-curtir {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    color 0.15s var(--ease-out),
+    transform 0.1s var(--ease-out);
+}
+
+.post-curtir:hover:not(:disabled) {
+  color: var(--live);
+}
+
+.post-curtir.curtido {
+  color: var(--live);
+}
+
+.post-curtir:active:not(:disabled) {
+  transform: scale(1.15);
+}
+
+.post-curtir:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.post-comentar {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color 0.15s var(--ease-out);
+}
+
+.post-comentar:hover {
+  color: var(--brand);
 }
 
 .post-apagar {
@@ -917,6 +1117,145 @@ a.card-jogo:link {
 
 .post-apagar:hover {
   color: var(--danger);
+}
+
+.post-rodape .post-apagar {
+  margin-left: auto;
+}
+
+/* ============================================
+   COMENTÁRIOS
+   ============================================ */
+
+.comentarios {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.comentario-criar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.comentario-criar input {
+  flex: 1;
+  padding: 9px 12px;
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s var(--ease-out);
+}
+
+.comentario-criar input:focus {
+  border-color: var(--brand);
+}
+
+.comentario-criar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.15s var(--ease-out);
+}
+
+.comentario-criar button:hover:not(:disabled) {
+  background: var(--brand-deep);
+}
+
+.comentario-criar button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.comentario-vazio {
+  color: var(--text-tertiary);
+  font-size: 13px;
+  padding: 8px 0;
+}
+
+.comentario-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.comentario {
+  display: flex;
+  gap: 10px;
+}
+
+.comentario-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.comentario-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comentario-corpo {
+  flex: 1;
+  min-width: 0;
+}
+
+.comentario-cab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.comentario-nome {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.comentario-tempo {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.comentario-apagar {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  transition: color 0.15s var(--ease-out);
+}
+
+.comentario-apagar:hover {
+  color: var(--danger);
+}
+
+.comentario-texto {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  word-break: break-word;
 }
 
 /* ============================================
@@ -1185,6 +1524,63 @@ a.card-jogo:link {
 }
 
 /* ============================================
+   PÁGINA DE TORCIDA
+   ============================================ */
+
+.torcida-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.torcida-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--cor-clube) 0%, transparent 60%);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.torcida-escudo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--cor-clube);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.torcida-info {
+  position: relative;
+  z-index: 1;
+}
+
+.torcida-info h1 {
+  margin-bottom: 4px;
+}
+
+.torcida-torcedores {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ============================================
    SKELETON
    ============================================ */
 
@@ -1300,4 +1696,69 @@ a.card-jogo:link {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ============================================
+   RESPONSIVO
+   ============================================ */
+
+@media (max-width: 640px) {
+  nav {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .nav-logo {
+    flex: none;
+  }
+  .nav-links {
+    flex: none;
+    margin-left: auto;
+  }
+  .busca-campo {
+    order: 3;
+    width: 100%;
+    flex-basis: 100%;
+  }
+}
+.erro-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 40px 24px;
+}
+
+.erro-box-ico {
+  color: var(--gold);
+}
+
+.erro-box-msg {
+  color: var(--text-secondary);
+  font-size: 14px;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.erro-box-botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s var(--ease-out);
+}
+
+.erro-box-botao:hover {
+  border-color: var(--brand);
 }

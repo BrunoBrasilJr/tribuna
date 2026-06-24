@@ -33,7 +33,7 @@ function Feed() {
         const clube = perfil?.clube_coracao ?? "";
         setClubeCoracao(clube);
 
-        const lista = await buscarPosts(clube);
+        const lista = await buscarPosts(clube, usuario.id);
         setPosts(lista);
       } catch (e) {
         setErro(e.message);
@@ -46,7 +46,7 @@ function Feed() {
   }, [usuario, navigate]);
 
   function aoCriarPost() {
-    buscarPosts(clubeCoracao)
+    buscarPosts(clubeCoracao, usuario.id)
       .then(setPosts)
       .catch((e) => setErro(e.message));
   }
@@ -90,6 +90,7 @@ function Feed() {
               key={post.id}
               post={post}
               usuarioLogadoId={usuario?.id}
+              usuario={usuario}
               aoApagar={aoApagar}
             />
           ))}

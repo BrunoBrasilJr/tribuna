@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 
-export async function buscarPosts(clubeCoracao) {
+export async function buscarPosts(clubeCoracao, usuarioId) {
   const { data, error } = await supabase
     .from("posts")
     .select(
@@ -11,14 +11,23 @@ export async function buscarPosts(clubeCoracao) {
       clube_tag,
       criado_em,
       autor_id,
-      profiles ( nome, foto_url, clube_coracao )
+      profiles ( nome, foto_url, clube_coracao ),
+      curtidas ( usuario_id ),
+      comentarios ( id )
     `,
     )
     .order("criado_em", { ascending: false });
 
   if (error) throw error;
 
-  const posts = data || [];
+  const posts = (data || []).map((p) => ({
+    ...p,
+    totalCurtidas: p.curtidas ? p.curtidas.length : 0,
+    totalComentarios: p.comentarios ? p.comentarios.length : 0,
+    curtidoPorMim: usuarioId
+      ? (p.curtidas || []).some((c) => c.usuario_id === usuarioId)
+      : false,
+  }));
 
   if (clubeCoracao) {
     posts.sort((a, b) => {
@@ -65,4 +74,66 @@ export async function enviarImagemPost(usuarioId, arquivo) {
 
   const { data } = supabase.storage.from("posts").getPublicUrl(caminho);
   return data.publicUrl;
+}
+
+export async function curtirPost(postId, usuarioId) {
+  const { error } = await supabase
+    .from("curtidas")
+    .insert({ post_id: postId, usuario_id: usuarioId });
+  if (error) throw error;
+}
+
+export async function descurtirPost(postId, usuarioId) {
+  const { error } = await supabase
+    .from("curtidas")
+    .delete()
+    .eq("post_id", postId)
+    .eq("usuario_id", usuarioId);
+  if (error) throw error;
+}
+
+export async function buscarComentarios(postId) {
+  const { data, error } = await supabase
+    .from("comentarios")
+    .select(
+      `
+      id,
+      texto,
+      criado_em,
+      autor_id,
+      profiles ( nome, foto_url )
+    `,
+    )
+    .eq("post_id", postId)
+    .order("criado_em", { ascending: true });
+
+  if (error) throw error;
+  return data || [];
+}
+
+export async function criarComentario(postId, autorId, texto) {
+  const { data, error } = await supabase
+    .from("comentarios")
+    .insert({ post_id: postId, autor_id: autorId, texto })
+    .select(
+      `
+      id,
+      texto,
+      criado_em,
+      autor_id,
+      profiles ( nome, foto_url )
+    `,
+    )
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function apagarComentario(comentarioId) {
+  const { error } = await supabase
+    .from("comentarios")
+    .delete()
+    .eq("id", comentarioId);
+  if (error) throw error;
 }

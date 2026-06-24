@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { buscarJogosDeHoje } from "../services/api";
 import CardJogo from "../components/CardJogo";
 import CardJogoSkeleton from "../components/CardJogoSkeleton";
@@ -8,19 +8,36 @@ function Home() {
   const [jogos, setJogos] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
-
-  const carregar = useCallback(() => {
-    setCarregando(true);
-    setErro(null);
-    buscarJogosDeHoje()
-      .then((dados) => setJogos(dados))
-      .catch((e) => setErro(e.message))
-      .finally(() => setCarregando(false));
-  }, []);
+  const [tentativa, setTentativa] = useState(0);
 
   useEffect(() => {
-    carregar();
-  }, [carregar]);
+    let ativo = true;
+
+    buscarJogosDeHoje()
+      .then((dados) => {
+        if (ativo) {
+          setJogos(dados);
+          setErro(null);
+        }
+      })
+      .catch((e) => {
+        if (ativo) setErro(e.message);
+      })
+      .finally(() => {
+        if (ativo) setCarregando(false);
+      });
+
+    return () => {
+      ativo = false;
+    };
+  }, [tentativa]);
+
+  function tentarNovamente() {
+    setCarregando(true);
+    setErro(null);
+    setJogos([]);
+    setTentativa((t) => t + 1);
+  }
 
   return (
     <div className="page">
@@ -38,7 +55,7 @@ function Home() {
         <div className="erro-box">
           <AlertTriangle size={28} className="erro-box-ico" />
           <p className="erro-box-msg">{erro}</p>
-          <button className="erro-box-botao" onClick={carregar}>
+          <button className="erro-box-botao" onClick={tentarNovamente}>
             <RotateCw size={16} /> Tentar novamente
           </button>
         </div>

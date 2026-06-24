@@ -1,42 +1,55 @@
 # Tribuna
 
-Rede social de futebol com placares ao vivo. O Tribuna combina o acompanhamento de partidas em tempo real com um espaço onde torcedores publicam e debatem sobre seus clubes, unindo dado e comunidade num só lugar.
+Rede social de futebol com placares ao vivo. O Tribuna une o acompanhamento de partidas em tempo real com um espaço onde torcedores publicam, curtem e debatem sobre futebol — combinando dado e comunidade num só lugar.
+
+**Acesse o projeto no ar:** https://tribuna-seven.vercel.app
 
 Projeto desenvolvido para fins de aprendizado e portfólio.
 
+## Screenshots
+
+<!-- Adicione aqui prints das telas. Exemplo:
+![Home](caminho/para/home.png)
+![Detalhes do jogo](caminho/para/jogo.png)
+![Feed](caminho/para/feed.png)
+-->
+
 ## Sobre o projeto
 
-A maioria das plataformas de placares ao vivo entrega apenas o dado bruto, sem espaço para a voz da torcida. O Tribuna propõe um caminho diferente: além dos jogos do dia, das ligas principais e da busca por times e competições, cada usuário escolhe seu clube do coração e participa de um feed onde a comunidade publica conteúdo sobre seus times.
+A maioria das plataformas de placares ao vivo entrega apenas o dado bruto, sem espaço para a voz da torcida. O Tribuna propõe um caminho diferente: além dos jogos do dia e dos detalhes de cada partida, cada usuário escolhe seu clube do coração, participa de um feed social e tem uma página de torcida dedicada a cada clube.
 
 ## Funcionalidades
 
-### Disponíveis
-
-- Placares ao vivo das principais competições, atualizados a partir da API-Football
-- Exibição de jogos do dia com escudos, bandeiras e status da partida (ao vivo, encerrado, agendado)
-- Tradução dos nomes de seleções para português
-- Tratamento visual para competições e times sem logo disponível
-- Cache de requisições para uso eficiente da API
-- Interface responsiva com tema escuro
-
-### Planejadas
-
-- [ ] Página de detalhes da partida com escalações, eventos e estatísticas
-- [ ] Busca de times, jogadores e competições
-- [ ] Cadastro e login de usuários
-- [ ] Perfil editável (nome, foto e biografia)
-- [ ] Seleção de clube do coração com personalização da experiência
-- [ ] Feed da torcida com publicação de texto e imagem
-- [ ] Moderação de conteúdo (filtro de imagem, denúncias e painel administrativo)
+- Placares ao vivo das principais competições (Brasileirão, Premier League, La Liga, Serie A, Ligue 1, Champions League e Copa do Mundo), atualizados pela API-Football
+- Página de detalhes da partida com placar, informações do jogo e timeline de eventos (gols, cartões e substituições)
+- Cadastro e login por e-mail/senha e login social com Google
+- Perfil editável com nome, biografia, foto de perfil e clube do coração
+- Feed da torcida: publicação de posts com texto e imagem, marcação opcional de clube e priorização dos posts do clube do coração
+- Curtidas e comentários nos posts, com atualização instantânea (otimista)
+- Página de torcida por clube, com identidade visual do time, contagem de torcedores e mural exclusivo
+- Busca de torcidas na barra de navegação, com desfoque de fundo
+- Tradução de nomes de seleções e tratamento visual para times e competições sem logo
+- Interface responsiva com tema escuro, animações e carregamento por skeletons
+- Tratamento de falhas da API com mensagem clara e opção de tentar novamente
 
 ## Tecnologias
 
-- React
-- Vite
+- React + Vite
 - React Router
-- Lucide React (ícones)
+- Supabase (autenticação, banco de dados PostgreSQL e storage de imagens)
 - API-Football (dados de partidas)
-- Supabase (autenticação e banco de dados) — em implementação
+- Lucide React (ícones)
+- Vercel (hospedagem com deploy contínuo)
+
+## Decisões técnicas
+
+Algumas escolhas que valem destacar:
+
+- **Segurança no banco (Row Level Security):** todas as tabelas usam políticas de RLS no Supabase, garantindo que cada usuário só possa editar ou apagar os próprios dados (perfil, posts, curtidas, comentários), mesmo que a chave pública esteja exposta no front-end.
+- **Cache de requisições:** as respostas da API-Football são guardadas em memória por alguns minutos, reduzindo o consumo do limite diário do plano gratuito.
+- **Atualização otimista:** curtidas e comentários refletem na interface imediatamente, antes da confirmação do servidor, com reversão automática em caso de falha.
+- **Design defensivo:** quando um escudo, logo ou foto não carrega, a interface exibe um fallback elegante em vez de imagem quebrada.
+- **Variáveis de ambiente:** chaves de API e credenciais ficam fora do código versionado, configuradas localmente e na hospedagem.
 
 ## Como executar localmente
 
@@ -54,19 +67,21 @@ Instalar as dependências:
 
     npm install
 
+Criar um arquivo `.env` na raiz com as chaves necessárias:
+
+    VITE_API_FOOTBALL_KEY=sua_chave_da_api_football
+    VITE_SUPABASE_URL=sua_url_do_supabase
+    VITE_SUPABASE_KEY=sua_chave_publica_do_supabase
+
 Rodar o projeto:
 
     npm run dev
 
-O projeto utiliza uma chave da API-Football. Para rodar localmente, crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
-
-    VITE_API_FOOTBALL_KEY=sua_chave_aqui
-
-A chave gratuita pode ser obtida em https://dashboard.api-football.com.
+A chave gratuita da API-Football pode ser obtida em https://dashboard.api-football.com e as credenciais do Supabase no painel do projeto em https://supabase.com.
 
 ## Status
 
-Em desenvolvimento. As funcionalidades de placares ao vivo estão operacionais; o módulo de rede social está em construção.
+Em desenvolvimento contínuo. As funcionalidades principais estão operacionais e o projeto está hospedado e acessível ao público.
 
 ## Autor
 

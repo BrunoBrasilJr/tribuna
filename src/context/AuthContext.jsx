@@ -5,6 +5,7 @@ import { AuthContext } from "./auth-context";
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null);
   const [carregando, setCarregando] = useState(true);
+  const [modalAberto, setModalAberto] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -51,9 +52,27 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut();
   }
 
+  function abrirModal() {
+    setModalAberto(true);
+  }
+
+  function fecharModal() {
+    setModalAberto(false);
+  }
+
   return (
     <AuthContext.Provider
-      value={{ usuario, carregando, cadastrar, entrar, entrarComGoogle, sair }}
+      value={{
+        usuario,
+        carregando,
+        cadastrar,
+        entrar,
+        entrarComGoogle,
+        sair,
+        modalAberto,
+        abrirModal,
+        fecharModal,
+      }}
     >
       {children}
     </AuthContext.Provider>

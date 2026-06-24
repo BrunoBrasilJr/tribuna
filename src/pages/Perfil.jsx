@@ -1,8 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth-context";
 import { supabase } from "../services/supabase";
-import { Loader2, Save, CheckCircle, Camera, User } from "lucide-react";
+import { nomeDisponivel } from "../services/perfil";
+import {
+  Loader2,
+  Save,
+  CheckCircle,
+  Camera,
+  User,
+  Pencil,
+  Check,
+  X,
+} from "lucide-react";
 
 const CLUBES = [
   "Flamengo",
@@ -22,11 +32,21 @@ const CLUBES = [
   "Athletico-PR",
 ];
 
+const DIAS_BLOQUEIO = 14;
+
 function Perfil() {
   const { usuario } = useAuth();
   const navigate = useNavigate();
 
   const [nome, setNome] = useState("");
+  const [nomeOriginal, setNomeOriginal] = useState("");
+  const [nomeAlteradoEm, setNomeAlteradoEm] = useState(null);
+  const [editandoNome, setEditandoNome] = useState(false);
+  const [statusNome, setStatusNome] = useState(null);
+  const [salvandoNome, setSalvandoNome] = useState(false);
+  const [avisoNome, setAvisoNome] = useState(null);
+  const timerNome = useRef(null);
+
   const [bio, setBio] = useState("");
   const [clube, setClube] = useState("");
   const [fotoUrl, setFotoUrl] = useState("");
@@ -38,7 +58,7 @@ function Perfil() {
 
   useEffect(() => {
     if (!usuario) {
-      navigate("/login");
+      navigate("/");
       return;
     }
 
@@ -53,6 +73,8 @@ function Perfil() {
         setErro(error.message);
       } else if (data) {
         setNome(data.nome ?? "");
+        setNomeOriginal(data.nome ?? "");
+        setNomeAlteradoEm(data.nome_alterado_em ?? null);
         setBio(data.bio ?? "");
         setClube(data.clube_coracao ?? "");
         setFotoUrl(data.foto_url ?? "");
@@ -62,6 +84,86 @@ function Perfil() {
 
     carregarPerfil();
   }, [usuario, navigate]);
+
+  function aoDigitarNome(valor) {
+    setNome(valor);
+
+    if (timerNome.current) clearTimeout(timerNome.current);
+
+    const limpo = valor.trim();
+    if (limpo === nomeOriginal || limpo.length < 3) {
+      setStatusNome(null);
+      return;
+    }
+
+    setStatusNome("checando");
+    timerNome.current = setTimeout(async () => {
+      const livre = await nomeDisponivel(limpo);
+      setStatusNome(livre ? "livre" : "ocupado");
+    }, 500);
+  }
+
+  function calcularDiasRestantes() {
+    if (!nomeAlteradoEm) return 0;
+    const passou =
+      (Date.now() - new Date(nomeAlteradoEm).getTime()) / (1000 * 60 * 60 * 24);
+    return Math.ceil(DIAS_BLOQUEIO - passou);
+  }
+
+  function iniciarEdicaoNome() {
+    const restantes = calcularDiasRestantes();
+    if (restantes > 0) {
+      setAvisoNome(
+        `Você poderá alterar o nome novamente em ${restantes} dia(s).`,
+      );
+      return;
+    }
+    setAvisoNome(null);
+    setEditandoNome(true);
+  }
+
+  function cancelarEdicaoNome() {
+    if (timerNome.current) clearTimeout(timerNome.current);
+    setNome(nomeOriginal);
+    setEditandoNome(false);
+    setStatusNome(null);
+    setAvisoNome(null);
+  }
+
+  async function salvarNome() {
+    if (nome.trim().length < 3) {
+      setAvisoNome("O nome precisa ter pelo menos 3 caracteres.");
+      return;
+    }
+    if (nome.trim() === nomeOriginal) {
+      setEditandoNome(false);
+      return;
+    }
+    if (statusNome === "ocupado") {
+      setAvisoNome("Este nome de usuário já está em uso.");
+      return;
+    }
+
+    setSalvandoNome(true);
+    setAvisoNome(null);
+
+    const agora = new Date().toISOString();
+    const { error } = await supabase
+      .from("profiles")
+      .upsert({ id: usuario.id, nome: nome.trim(), nome_alterado_em: agora });
+
+    setSalvandoNome(false);
+
+    if (error) {
+      setAvisoNome("Não foi possível salvar. Tente outro nome.");
+      return;
+    }
+
+    setNomeOriginal(nome.trim());
+    setNomeAlteradoEm(agora);
+    setEditandoNome(false);
+    setStatusNome(null);
+  }
 
   async function aoEscolherFoto(e) {
     const arquivo = e.target.files?.[0];
@@ -102,7 +204,6 @@ function Perfil() {
 
     const { error } = await supabase.from("profiles").upsert({
       id: usuario.id,
-      nome,
       bio,
       clube_coracao: clube,
     });
@@ -162,13 +263,62 @@ function Perfil() {
 
         <div className="auth-campo">
           <label>Nome de usuário</label>
-          <input
-            type="text"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            placeholder="Como você quer ser chamado"
-            maxLength={40}
-          />
+
+          {editandoNome ? (
+            <>
+              <div className="campo-com-status">
+                <input
+                  type="text"
+                  value={nome}
+                  onChange={(e) => aoDigitarNome(e.target.value)}
+                  maxLength={20}
+                  autoFocus
+                />
+                {statusNome === "checando" && (
+                  <Loader2 size={16} className="girando status-ico" />
+                )}
+                {statusNome === "livre" && (
+                  <Check size={16} className="status-ico status-ok" />
+                )}
+                {statusNome === "ocupado" && (
+                  <X size={16} className="status-ico status-erro" />
+                )}
+              </div>
+              <div className="nome-acoes">
+                <button
+                  className="nome-salvar"
+                  onClick={salvarNome}
+                  disabled={salvandoNome}
+                >
+                  {salvandoNome ? (
+                    <Loader2 size={14} className="girando" />
+                  ) : (
+                    <Check size={14} />
+                  )}
+                  Salvar nome
+                </button>
+                <button className="nome-cancelar" onClick={cancelarEdicaoNome}>
+                  <X size={14} /> Cancelar
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="nome-display">
+              <span className="nome-valor">{nomeOriginal || "Sem nome"}</span>
+              <button
+                className="nome-editar"
+                onClick={iniciarEdicaoNome}
+                aria-label="Editar nome"
+              >
+                <Pencil size={15} />
+              </button>
+            </div>
+          )}
+
+          <span className="campo-aviso-placeholder">
+            Só é possível alterar o nome a cada {DIAS_BLOQUEIO} dias.
+          </span>
+          {avisoNome && <span className="campo-aviso erro">{avisoNome}</span>}
         </div>
 
         <div className="auth-campo">

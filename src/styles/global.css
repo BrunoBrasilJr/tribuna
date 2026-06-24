@@ -1702,6 +1702,161 @@ a.card-jogo:link {
    RESPONSIVO
    ============================================ */
 
+/* ============================================
+   MODAL DE LOGIN
+   ============================================ */
+
+.nav-link-botao {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: color 0.15s var(--ease-out);
+}
+
+.nav-link-botao:hover {
+  color: var(--text-primary);
+}
+
+.modal-ativo .page {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 11, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: surgir-overlay 0.2s var(--ease-out);
+}
+
+.modal-login {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-lg);
+  animation: modal-surgir 0.25s var(--ease-out);
+}
+
+@keyframes modal-surgir {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-fechar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  display: inline-flex;
+  transition: color 0.15s var(--ease-out);
+}
+
+.modal-fechar:hover {
+  color: var(--text-primary);
+}
+
+.modal-titulo {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.modal-sub {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.campo-com-status {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.campo-com-status input {
+  width: 100%;
+  padding-right: 38px;
+}
+
+.status-ico {
+  position: absolute;
+  right: 12px;
+}
+
+.status-ok {
+  color: var(--win);
+}
+
+.status-erro {
+  color: var(--danger);
+}
+
+.campo-aviso {
+  display: block;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.campo-aviso.ok {
+  color: var(--win);
+}
+
+.campo-aviso.erro {
+  color: var(--danger);
+}
+
+.termos-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.termos-check input {
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: var(--brand);
+}
+
+.termos-check a {
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.termos-check a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 640px) {
   nav {
     gap: 12px;
@@ -1720,45 +1875,91 @@ a.card-jogo:link {
     flex-basis: 100%;
   }
 }
-.erro-box {
+body.modal-ativo {
+  overflow: hidden;
+}
+/* ============================================
+   EDIÇÃO DE NOME NO PERFIL
+   ============================================ */
+
+.nome-display {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  text-align: center;
-  background: var(--surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 40px 24px;
-}
-
-.erro-box-ico {
-  color: var(--gold);
-}
-
-.erro-box-msg {
-  color: var(--text-secondary);
-  font-size: 14px;
-  max-width: 320px;
-  line-height: 1.5;
-}
-
-.erro-box-botao {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 18px;
-  background: var(--bg-overlay);
+  gap: 10px;
+  padding: 11px 13px;
+  background: var(--bg-base);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  color: var(--text-primary);
+}
+
+.nome-valor {
+  flex: 1;
   font-size: 14px;
+  color: var(--text-primary);
+}
+
+.nome-editar {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  display: inline-flex;
+  transition: color 0.15s var(--ease-out);
+}
+
+.nome-editar:hover {
+  color: var(--brand);
+}
+
+.nome-acoes {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.nome-salvar,
+.nome-cancelar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  transition: border-color 0.15s var(--ease-out);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.15s var(--ease-out);
 }
 
-.erro-box-botao:hover {
+.nome-salvar {
+  background: var(--brand);
+  color: #fff;
   border-color: var(--brand);
+}
+
+.nome-salvar:hover:not(:disabled) {
+  background: var(--brand-deep);
+}
+
+.nome-salvar:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.nome-cancelar {
+  background: none;
+  color: var(--text-secondary);
+}
+
+.nome-cancelar:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.campo-aviso-placeholder {
+  display: block;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 6px;
 }
